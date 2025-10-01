@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Sparkles, Sun, Moon } from 'lucide-react';
 import mammoth from 'mammoth';
@@ -15,8 +14,7 @@ import {
   analyzeTextForSuggestions, 
   analyzeTextStructure, 
   analyzeTextCitations, 
-  analyzeTextMethodology,
-  changeTextTone
+  analyzeTextMethodology
 } from './services/geminiService';
 import { SAMPLE_TEXT, CITATION_STYLES } from './constants';
 import type { 
@@ -35,7 +33,6 @@ const App: React.FC = () => {
   const [citationAnalysis, setCitationAnalysis] = useState<CitationAnalysis | null>(null);
   const [methodologyAnalysis, setMethodologyAnalysis] = useState<MethodologyAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState<LoadingStates>({});
-  const [selectedTone, setSelectedTone] = useState('academico');
   const [citationStyle, setCitationStyle] = useState('APA');
   const [error, setError] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -169,24 +166,6 @@ const App: React.FC = () => {
   const handleAnalyzeStructure = () => runAnalysis(() => analyzeTextStructure(text), setStructuralAnalysis, 'structure');
   const handleAnalyzeCitations = () => runAnalysis(() => analyzeTextCitations(text, citationStyle), setCitationAnalysis, 'citations');
   const handleAnalyzeMethodology = () => runAnalysis(() => analyzeTextMethodology(text), setMethodologyAnalysis, 'methodology');
-
-  const handleChangeTone = async () => {
-    if (!text.trim()) return;
-    setLoadingState('tone', true);
-    setError('');
-    try {
-      const newText = await changeTextTone(text, selectedTone);
-      if (editorRef.current) {
-          editorRef.current.innerHTML = `<p>${newText.replace(/\n/g, '</p><p>')}</p>`;
-      }
-      updateContent();
-      setSuggestions([]);
-    } catch (err) {
-      setError(`No se pudo cambiar el tono: ${err instanceof Error ? err.message : String(err)}.`);
-    } finally {
-      setLoadingState('tone', false);
-    }
-  };
 
   const saveSelection = (): Range | null => {
     if (window.getSelection) {
@@ -337,9 +316,6 @@ const App: React.FC = () => {
           <ResultsPanel
             isLoading={isLoading}
             text={text}
-            selectedTone={selectedTone}
-            setSelectedTone={setSelectedTone}
-            handleChangeTone={handleChangeTone}
             handleAnalyzeText={handleAnalyzeText}
             handleAnalyzeStructure={handleAnalyzeStructure}
             handleAnalyzeCitations={handleAnalyzeCitations}

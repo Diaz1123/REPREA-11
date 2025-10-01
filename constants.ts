@@ -1,4 +1,3 @@
-
 import { Category } from './types';
 
 export const CATEGORIES: Category[] = [
@@ -8,14 +7,6 @@ export const CATEGORIES: Category[] = [
     { id: 'punctuation', label: 'Puntuación', color: 'bg-yellow-500' },
     { id: 'style', label: 'Estilo Científico', color: 'bg-green-500', subcategories: [{ id: 'lenguaje_vago', label: 'Lenguaje Vago' }, { id: 'antropomorfismo', label: 'Antropomorfismo' }, { id: 'consistencia', label: 'Consistencia' }] },
     { id: 'clarity', label: 'Claridad', color: 'bg-indigo-500', subcategories: [{ id: 'oraciones_complejas', label: 'Oraciones Complejas' }, { id: 'nominalizacion', label: 'Nominalización' }] }
-];
-
-export const TONES = [
-    { id: 'academico', label: 'Tono Académico/Formal' },
-    { id: 'activa', label: 'Convertir a Voz Activa' },
-    { id: 'pasiva', label: 'Convertir a Voz Pasiva' },
-    { id: 'conciso', label: 'Tono Conciso (Abstracts)' },
-    { id: 'cauteloso', label: 'Tono Cauteloso (Discusión)' }
 ];
 
 export const CITATION_STYLES = ['APA', 'Vancouver', 'MLA', 'Chicago', 'IEEE'];

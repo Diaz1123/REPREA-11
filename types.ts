@@ -1,4 +1,3 @@
-
 // Allow access to globally loaded libraries
 declare global {
   interface Window {
@@ -58,7 +57,7 @@ export interface MethodologyAnalysis {
 
 export type AnalysisType = 'corrections' | 'structure' | 'citations' | 'methodology';
 export type LoadingStates = {
-  [key in AnalysisType | 'tone' | 'refGenerator']?: boolean;
+  [key in AnalysisType | 'refGenerator']?: boolean;
 };
 
 export interface Category {

@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import type { Suggestion, StructuralAnalysisSection, CitationAnalysis, MethodologyAnalysis } from '../types';
 
@@ -73,19 +72,4 @@ export const analyzeTextMethodology = async (text: string): Promise<MethodologyA
     const prompt = `Eres un experto en metodología de investigación. Analiza el siguiente texto para evaluar la coherencia metodológica y la reproducibilidad. Realiza un parser, análisis de coherencia, scoring (0-100), y genera un reporte. IMPORTANTE: Todo el resultado, incluyendo nombres de las claves del JSON y sus valores, debe estar en español. Texto: "${text}". Devuelve un único objeto JSON con "puntaje_general", "comentario_resumen", "verificaciones_especificas" (con "verificacion", "es_coherente", "comentario"), "inconsistencias" (con "seccion_a", "seccion_b", "descripcion", "sugerencia"), y "evaluacion_reproducibilidad" (con "puntaje_completitud", "informacion_faltante").`;
     const schema = { type: Type.OBJECT, properties: { puntaje_general: { type: Type.NUMBER }, comentario_resumen: { type: Type.STRING }, verificaciones_especificas: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { verificacion: { type: Type.STRING }, es_coherente: { type: Type.BOOLEAN }, comentario: { type: Type.STRING } }, required: ["verificacion", "es_coherente", "comentario"] } }, inconsistencias: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { seccion_a: { type: Type.STRING }, seccion_b: { type: Type.STRING }, descripcion: { type: Type.STRING }, sugerencia: { type: Type.STRING } }, required: ["seccion_a", "seccion_b", "descripcion", "sugerencia"] } }, evaluacion_reproducibilidad: { type: Type.OBJECT, properties: { puntaje_completitud: { type: Type.NUMBER }, informacion_faltante: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["puntaje_completitud", "informacion_faltante"] } }, required: ["puntaje_general", "comentario_resumen", "verificaciones_especificas", "inconsistencias", "evaluacion_reproducibilidad"] };
     return callGenerativeModel<MethodologyAnalysis>(prompt, schema);
-};
-
-export const changeTextTone = async (text: string, selectedTone: string): Promise<string> => {
-    let instruction = '';
-    switch (selectedTone) {
-        case 'academico': instruction = 'Reescribe en tono académico/formal.'; break;
-        case 'activa': instruction = 'Reescribe usando voz activa.'; break;
-        case 'pasiva': instruction = 'Reescribe usando voz pasiva.'; break;
-        case 'conciso': instruction = 'Reescribe de forma concisa.'; break;
-        case 'cauteloso': instruction = 'Reescribe con un lenguaje cauteloso.'; break;
-    }
-    const prompt = `${instruction}\n\nTexto original:\n---\n${text}\n---\n\nTexto reescrito:`;
-    
-    const response = await ai.models.generateContent({ model, contents: prompt, safetySettings });
-    return response.text;
 };

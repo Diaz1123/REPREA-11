@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { Sparkles, Loader2, PenLine, LayoutList, BookMarked, Beaker, Award, Download } from 'lucide-react';
 import Card from './ui/Card';
-import { TONES } from '../constants';
 import type { LoadingStates, Suggestion, StructuralAnalysisSection, CitationAnalysis, MethodologyAnalysis } from '../types';
 
 import CorrectionsTab from './tabs/CorrectionsTab';
@@ -13,9 +11,6 @@ import MethodologyTab from './tabs/MethodologyTab';
 interface ResultsPanelProps {
   isLoading: LoadingStates;
   text: string;
-  selectedTone: string;
-  setSelectedTone: (tone: string) => void;
-  handleChangeTone: () => void;
   handleAnalyzeText: () => void;
   handleAnalyzeStructure: () => void;
   handleAnalyzeCitations: () => void;
@@ -37,7 +32,7 @@ interface ResultsPanelProps {
 
 const ResultsPanel: React.FC<ResultsPanelProps> = (props) => {
     const {
-        isLoading, text, selectedTone, setSelectedTone, handleChangeTone, handleAnalyzeText,
+        isLoading, text, handleAnalyzeText,
         handleAnalyzeStructure, handleAnalyzeCitations, handleAnalyzeMethodology,
         setShowResultsDashboard, setShowReportModal, analysesCompleted,
         activeTab, setActiveTab, suggestions, applySuggestion, applyAllSuggestions,
@@ -51,29 +46,6 @@ const ResultsPanel: React.FC<ResultsPanelProps> = (props) => {
             <h2 className="text-xl font-semibold mb-4 text-white">Herramientas de IA</h2>
             <div className="p-4 rounded-lg border mb-6 bg-gray-900 border-gray-700">
                 <div className="space-y-4">
-                    <div>
-                        <label className="flex items-center gap-2 text-sm font-medium mb-2 text-gray-300">
-                            <PenLine size={16}/>Ajustar Tono
-                        </label>
-                        <div className="flex gap-2">
-                            <select
-                                value={selectedTone}
-                                onChange={(e) => setSelectedTone(e.target.value)}
-                                disabled={isLoading.tone}
-                                className="flex-grow w-full px-2 py-2 text-sm rounded-lg border bg-gray-800 border-gray-600"
-                            >
-                                {TONES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
-                            </select>
-                            <button
-                                onClick={handleChangeTone}
-                                disabled={isLoading.tone || !text.trim()}
-                                className="px-4 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white disabled:opacity-50"
-                            >
-                                {isLoading.tone ? <Loader2 className="w-4 h-4 animate-spin"/> : <Sparkles className="w-4 h-4"/>}
-                                Reescribir
-                            </button>
-                        </div>
-                    </div>
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium mb-2 text-gray-300">
                             <Beaker size={16}/>Análisis de Contenido
